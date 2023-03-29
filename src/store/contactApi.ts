@@ -6,8 +6,12 @@ export const contactApi = createApi({
   reducerPath: 'contactApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (builder) => ({
-    getContactList: builder.query<IContact[], number>({
-      query: (pageIndex) => `contacts?_limit=10&_page=${pageIndex}`,
+    getContactList: builder.query<
+      IContact[],
+      { pageIndex: number; searchQuery?: string }
+    >({
+      query: ({ pageIndex = 1, searchQuery = '' }) =>
+        `contacts?&_sort=first_name,last_name&_limit=10&_page=${pageIndex}`,
       serializeQueryArgs: ({ endpointName }) => endpointName,
       merge: (currentCache, newItems) => {
         currentCache.push(...newItems);
