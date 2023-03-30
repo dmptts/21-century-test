@@ -6,4 +6,5 @@ export interface IContact {
   email: string;
   phone: string;
   userpic: string;
+  address: string;
 }

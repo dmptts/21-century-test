@@ -11,10 +11,16 @@ export const contactApi = createApi({
       { pageIndex: number; searchQuery?: string }
     >({
       query: ({ pageIndex = 1, searchQuery = '' }) =>
-        `contacts?&_sort=first_name,last_name&_limit=10&_page=${pageIndex}`,
+        `contacts?_sort=first_name,last_name${
+          searchQuery && `&q=${searchQuery}`
+        }&_limit=10&_page=${pageIndex}`,
       serializeQueryArgs: ({ endpointName }) => endpointName,
-      merge: (currentCache, newItems) => {
-        currentCache.push(...newItems);
+      merge: (currentCache, newItems, queryArgs) => {
+        if (queryArgs.arg.pageIndex > 1) {
+          currentCache.push(...newItems);
+        } else {
+          return newItems;
+        }
       },
       forceRefetch({ currentArg, previousArg }) {
         return currentArg !== previousArg;
