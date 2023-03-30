@@ -20,7 +20,7 @@ export default createGlobalStyle`
 
   @font-face {
     font-style: normal;
-    font-weight: 500;
+    font-weight: 600;
     font-family: "Inter";
     font-display: swap;
     src:
