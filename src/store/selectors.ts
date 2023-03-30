@@ -1,3 +1,4 @@
 import { RootState } from '.';
 
-export const selectSearchQuery = (state: RootState) => state.search.searchQuery;
+export const selectContactSearchQuery = (state: RootState) =>
+  state.search.contactSearchQuery;

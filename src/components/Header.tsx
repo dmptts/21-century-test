@@ -1,43 +1,38 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useAppDispatch } from '../hooks/useAppDispatch';
-import { useAppSelector } from '../hooks/useAppSelector';
-import { useDebounce } from '../hooks/useDebounce';
-import { setSearchQuery } from '../store/searchSlice';
-import { selectSearchQuery } from '../store/selectors';
+import { setContactSearchQuery } from '../store/searchSlice';
+import { selectContactSearchQuery } from '../store/selectors';
+import AppSearch from './AppSearch';
 import Container from './Container';
 
 export default function Header() {
-  const dispatch = useAppDispatch();
-  const searchQueue = useAppSelector(selectSearchQuery);
-  const [localSearchQuery, setLocalSearchQuery] = useState(searchQueue);
-  const debouncedSearch = useDebounce(localSearchQuery);
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLocalSearchQuery(e.target.value);
-  };
-
-  useEffect(() => {
-    dispatch(setSearchQuery(debouncedSearch));
-  }, [debouncedSearch, dispatch]);
-
   return (
     <Root>
-      <Container>
-        <input
+      <StyledContainer>
+        <StyledSearch
           type="text"
           name="contact-search"
           id="contact-search-field"
           placeholder="Поиск"
-          value={localSearchQuery}
-          onChange={handleSearchChange}
+          searchQuerySelector={selectContactSearchQuery}
+          searchQuerySetter={setContactSearchQuery}
         />
-      </Container>
+      </StyledContainer>
     </Root>
   );
 }
 
 const Root = styled.header`
-  min-height: 64px;
   background-color: var(--color-accent);
+`;
+
+const StyledContainer = styled(Container)`
+  display: flex;
+  align-items: center;
+
+  padding-top: 14px;
+  padding-bottom: 14px;
+`;
+
+const StyledSearch = styled(AppSearch)`
+  width: 452px;
 `;

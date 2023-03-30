@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useAppSelector } from '../hooks/useAppSelector';
 import { useGetContactListQuery } from '../store/contactApi';
-import { selectSearchQuery } from '../store/selectors';
+import { selectContactSearchQuery } from '../store/selectors';
 import { IContact } from '../types/contact';
 
 export default function ContactTable() {
@@ -16,7 +16,7 @@ export default function ContactTable() {
     pageIndex: 1,
     pageSize: 10,
   });
-  const searchQuery = useAppSelector(selectSearchQuery);
+  const searchQuery = useAppSelector(selectContactSearchQuery);
 
   useEffect(() => {
     setPagination((prevState) => ({
