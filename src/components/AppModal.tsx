@@ -4,10 +4,12 @@ import { useModal } from '../hooks/useModal';
 
 interface IAppModalProps {
   name: string;
+  className?: string;
 }
 
 export default function AppModal({
   name,
+  className,
   children,
 }: PropsWithChildren<IAppModalProps>) {
   const { activeModal, closeModal } = useModal();
@@ -15,7 +17,9 @@ export default function AppModal({
 
   return (
     <>
-      <Modal isOpened={isOpened}>{children}</Modal>
+      <Modal isOpened={isOpened} className={className}>
+        {children}
+      </Modal>
       <Overlay isOpen={isOpened} onClick={closeModal} />
     </>
   );
@@ -28,14 +32,14 @@ const Modal = styled.div<{ isOpened: boolean }>`
   z-index: 10;
 
   display: ${({ isOpened }) => (isOpened ? 'block' : 'none')};
-  min-width: 436px;
+  /* min-width: 436px;
   padding-top: 30px;
   padding-bottom: 20px;
   padding-left: 66px;
   padding-right: 66px;
 
   background-color: #ffffff;
-  border-radius: 14px;
+  border-radius: 14px; */
 
   transform: translate(-50%, -50%);
 `;
