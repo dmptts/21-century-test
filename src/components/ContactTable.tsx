@@ -1,15 +1,17 @@
+import { useCallback, useEffect, useState } from 'react';
 import {
   createColumnHelper,
-  flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useAppSelector } from '../hooks/useAppSelector';
 import { useGetContactListQuery } from '../store/contactApi';
 import { selectContactSearchQuery } from '../store/selectors';
 import { IContact } from '../types/contact';
+import ContactTableHeader from './ContactTableHeader';
+import ContactTableBody from './ContactTableBody';
+import { ReactComponent as Logo } from './../img/logo.svg';
 
 export default function ContactTable() {
   const [pagination, setPagination] = useState({
@@ -55,6 +57,17 @@ export default function ContactTable() {
     columnHelper.accessor('id', {
       cell: (info) => info.getValue(),
     }),
+    columnHelper.accessor('userpic', {
+      header: () => <StyledLogo />,
+      cell: (info) => (
+        <Userpic
+          src={info.getValue()}
+          width="52"
+          height="52"
+          alt="Аватар пользователя"
+        />
+      ),
+    }),
     columnHelper.accessor(
       (row) => `${row.first_name} ${row.last_name}`.trim(),
       {
@@ -92,38 +105,24 @@ export default function ContactTable() {
   });
 
   return (
-    <table>
-      <thead>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <th key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody>
-        {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div>
+      <ContactTableHeader data={table} />
+      <ContactTableBody data={table} />
+    </div>
   );
 }
 
-const Contact = styled.li`
-  min-height: 100px;
+const StyledLogo = styled(Logo)`
+  display: block;
+  width: 36px;
+  height: 36px;
+  margin: 0 auto;
+`;
+
+const Userpic = styled.img`
+  width: 52px;
+  height: 52px;
+
+  object-fit: cover;
+  border-radius: 50%;
 `;

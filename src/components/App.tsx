@@ -1,7 +1,7 @@
 import ContactTable from './ContactTable';
 import Header from './Header';
 
-function App() {
+export default function App() {
   return (
     <>
       <Header />
@@ -9,5 +9,3 @@ function App() {
     </>
   );
 }
-
-export default App;

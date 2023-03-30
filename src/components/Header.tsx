@@ -22,6 +22,9 @@ export default function Header() {
 }
 
 const Root = styled.header`
+  position: fixed;
+  width: 100%;
+
   background-color: var(--color-accent);
 `;
 
