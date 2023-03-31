@@ -38,12 +38,17 @@ export default function RadialMenu() {
 }
 
 const Root = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+
   display: flex;
   flex-wrap: wrap;
   height: 436px;
   width: 436px;
 
-  transform: rotate(45deg);
+  transform: translate(-50%, -50%) rotate(45deg);
 `;
 
 const StyledPlusAccountIcon = styled(PlusAccountIcon)`

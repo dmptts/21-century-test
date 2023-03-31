@@ -13,7 +13,7 @@ export default function ContactTableBody({ data }: IContactTableBodyProps) {
     <TableBody>
       <TableBodyContainer>
         {data.getRowModel().rows.map((row) => (
-          <ContactRow data={row} />
+          <ContactRow key={row.id} data={row} />
         ))}
       </TableBodyContainer>
     </TableBody>

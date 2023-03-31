@@ -1,26 +1,43 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
-import { useModal } from '../hooks/useModal';
+import AppOverlay from './AppOverlay';
 
 interface IAppModalProps {
-  name: string;
   className?: string;
 }
 
 export default function AppModal({
-  name,
   className,
   children,
 }: PropsWithChildren<IAppModalProps>) {
-  const { activeModal, closeModal } = useModal();
-  const isOpened = activeModal === name;
+  const navigate = useNavigate();
+
+  const handleOverlayClick = () => {
+    navigate(-1);
+  };
+
+  const handleEscPress = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        navigate(-1);
+      }
+    },
+    [navigate]
+  );
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleEscPress);
+
+    return () => document.removeEventListener('keydown', handleEscPress);
+  }, [handleEscPress]);
 
   return (
     <>
-      <Modal isOpened={isOpened} className={className}>
+      <Modal isOpened={false} className={className}>
         {children}
       </Modal>
-      <Overlay isOpen={isOpened} onClick={closeModal} />
+      <AppOverlay handleClick={handleOverlayClick} />
     </>
   );
 }
@@ -31,28 +48,8 @@ const Modal = styled.div<{ isOpened: boolean }>`
   left: 50%;
   z-index: 10;
 
-  display: ${({ isOpened }) => (isOpened ? 'block' : 'none')};
-  /* min-width: 436px;
-  padding-top: 30px;
-  padding-bottom: 20px;
-  padding-left: 66px;
-  padding-right: 66px;
-
   background-color: #ffffff;
-  border-radius: 14px; */
+  border-radius: 14px;
 
   transform: translate(-50%, -50%);
-`;
-
-const Overlay = styled.div<{ isOpen: boolean }>`
-  position: fixed;
-  z-index: 5;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
-
-  background-color: rgba(5, 5, 16, 0.5);
 `;

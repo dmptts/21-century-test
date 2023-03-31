@@ -12,7 +12,9 @@ import { IContact } from '../types/contact';
 import ContactTableHeader from './ContactTableHeader';
 import ContactTableBody from './ContactTableBody';
 import { ReactComponent as Logo } from './../img/logo.svg';
-import { useModal } from '../hooks/useModal';
+import { redirect, useLocation } from 'react-router';
+import { APP_ROUTES } from '../config';
+import { Link } from 'react-router-dom';
 
 export default function ContactTable() {
   const [pagination, setPagination] = useState({
@@ -20,7 +22,7 @@ export default function ContactTable() {
     pageSize: 10,
   });
   const searchQuery = useAppSelector(selectContactSearchQuery);
-  const { openModal } = useModal();
+  const location = useLocation();
 
   useEffect(() => {
     setPagination((prevState) => ({
@@ -35,7 +37,7 @@ export default function ContactTable() {
   });
 
   const handleLogoClick = () => {
-    openModal('radial-menu');
+    redirect(APP_ROUTES.Menu);
   };
 
   const handleScroll = useCallback(() => {
@@ -64,7 +66,11 @@ export default function ContactTable() {
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor('userpic', {
-      header: () => <StyledLogo onClick={handleLogoClick} />,
+      header: () => (
+        <Link to={APP_ROUTES.Menu} state={{ background: location }}>
+          <StyledLogo onClick={handleLogoClick} />
+        </Link>
+      ),
       cell: (info) => (
         <Userpic
           src={info.getValue()}

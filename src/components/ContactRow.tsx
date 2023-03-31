@@ -1,6 +1,7 @@
 import { flexRender, Row } from '@tanstack/react-table';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { useModal } from '../hooks/useModal';
+import { APP_ROUTES } from '../config';
 import { IContact } from '../types/contact';
 import AppButton from './AppButton';
 
@@ -9,14 +10,13 @@ interface IContactRowProps {
 }
 
 export default function ContactRow({ data }: IContactRowProps) {
-  const { openModal } = useModal();
-
-  const handleRowClick = () => {
-    openModal('contact');
-  };
+  let location = useLocation();
 
   return (
-    <Root key={data.id} onClick={handleRowClick}>
+    <Root
+      to={`${APP_ROUTES.EditContact}/${data.getValue('id')}`}
+      state={{ background: location }}
+    >
       {data.getVisibleCells().map((cell) => (
         <div key={cell.id}>
           {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -33,7 +33,7 @@ const StyledButton = styled(AppButton)`
   display: none;
 `;
 
-const Root = styled.li`
+const Root = styled(Link)`
   display: grid;
   grid-template-columns: 52px 180px 158px 320px 245px 35px;
   column-gap: 16px;
