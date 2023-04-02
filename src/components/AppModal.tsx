@@ -1,55 +1,61 @@
-import { PropsWithChildren, useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import React, { ReactElement } from 'react';
 import styled from 'styled-components';
-import AppOverlay from './AppOverlay';
+import { useModal } from '../hooks/useModal';
 
 interface IAppModalProps {
+  name: string;
+  children: ReactElement | ReactElement[];
   className?: string;
 }
 
 export default function AppModal({
+  name,
   className,
   children,
-}: PropsWithChildren<IAppModalProps>) {
-  const navigate = useNavigate();
+}: IAppModalProps) {
+  const { activeModal, closeModal } = useModal();
+  const isOpened = activeModal.name === name;
 
-  const handleOverlayClick = () => {
-    navigate(-1);
-  };
-
-  const handleEscPress = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        navigate(-1);
-      }
-    },
-    [navigate]
-  );
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleEscPress);
-
-    return () => document.removeEventListener('keydown', handleEscPress);
-  }, [handleEscPress]);
+  const childrenWithInjectedData = React.Children.map(children, (child) => {
+    if (activeModal.data) {
+      return React.cloneElement(child, {
+        data: activeModal.data,
+      });
+    } else {
+      return child;
+    }
+  });
 
   return (
     <>
-      <Modal isOpened={false} className={className}>
-        {children}
+      <Modal $isOpened={isOpened} className={className}>
+        {childrenWithInjectedData}
       </Modal>
-      <AppOverlay handleClick={handleOverlayClick} />
+      <Overlay $isOpened={isOpened} onClick={closeModal} />
     </>
   );
 }
 
-const Modal = styled.div<{ isOpened: boolean }>`
+const Modal = styled.div<{ $isOpened: boolean }>`
   position: fixed;
   top: 50%;
   left: 50%;
   z-index: 10;
 
-  background-color: #ffffff;
-  border-radius: 14px;
+  display: ${({ $isOpened }) => ($isOpened ? 'block' : 'none')};
 
   transform: translate(-50%, -50%);
+`;
+
+const Overlay = styled.div<{ $isOpened: boolean }>`
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: ${({ $isOpened }) => ($isOpened ? 'block' : 'none')};
+
+  background-color: rgba(5, 5, 16, 0.5);
 `;

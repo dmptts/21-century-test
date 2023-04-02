@@ -1,8 +1,4 @@
-export const BASE_URL = 'http://localhost:3001/';
-
-export const APP_ROUTES = {
-  Main: '/',
-  CreateContact: '/create',
-  EditContact: '/edit',
-  Menu: '/menu',
-};
+export const BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://frantic-pear-puppy.cyclic.app/'
+    : 'http://localhost:3001/';

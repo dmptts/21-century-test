@@ -33,6 +33,7 @@ export default createGlobalStyle`
     --color-accent-secondary: #e5eaf4;
     --color-text: #000000;
     --color-text-secondary: #fefefe;
+    --color-error: #ff9494;
     --font-inter: "Inter", Arial, sans-serif;
   }
   

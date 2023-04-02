@@ -11,18 +11,18 @@ import { selectContactSearchQuery } from '../store/selectors';
 import { IContact } from '../types/contact';
 import ContactTableHeader from './ContactTableHeader';
 import ContactTableBody from './ContactTableBody';
+import Userpic from './Userpic';
 import { ReactComponent as Logo } from './../img/logo.svg';
-import { redirect, useLocation } from 'react-router';
-import { APP_ROUTES } from '../config';
-import { Link } from 'react-router-dom';
+import { useModal } from '../hooks/useModal';
+import { ReactComponent as SpinnerIcon } from './../img/icon-spinner.svg';
 
 export default function ContactTable() {
   const [pagination, setPagination] = useState({
     pageIndex: 1,
-    pageSize: 10,
+    pageSize: 20,
   });
   const searchQuery = useAppSelector(selectContactSearchQuery);
-  const location = useLocation();
+  const { openModal } = useModal();
 
   useEffect(() => {
     setPagination((prevState) => ({
@@ -31,13 +31,15 @@ export default function ContactTable() {
     }));
   }, [searchQuery]);
 
-  const { data, isFetching } = useGetContactListQuery({
-    pageIndex: pagination.pageIndex,
-    searchQuery: searchQuery,
-  });
+  const { data, isFetching, isLoading, isError, error } =
+    useGetContactListQuery({
+      pageIndex: pagination.pageIndex,
+      pageSize: pagination.pageSize,
+      searchQuery: searchQuery,
+    });
 
   const handleLogoClick = () => {
-    redirect(APP_ROUTES.Menu);
+    openModal('radial-menu');
   };
 
   const handleScroll = useCallback(() => {
@@ -66,13 +68,9 @@ export default function ContactTable() {
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor('userpic', {
-      header: () => (
-        <Link to={APP_ROUTES.Menu} state={{ background: location }}>
-          <StyledLogo onClick={handleLogoClick} />
-        </Link>
-      ),
+      header: () => <StyledLogo onClick={handleLogoClick} />,
       cell: (info) => (
-        <Userpic
+        <StyledUserpic
           src={info.getValue()}
           width="52"
           height="52"
@@ -119,7 +117,22 @@ export default function ContactTable() {
   return (
     <div>
       <ContactTableHeader data={table} />
-      <ContactTableBody data={table} />
+      {isLoading ? (
+        <MessageContainer>
+          <SpinnerIcon width={50} height={50} />
+        </MessageContainer>
+      ) : isError ? (
+        <MessageContainer>
+          <h3>Oops!</h3>
+          <p>Произошла ошибка:</p>
+          <p>
+            {'status' in error && error.status}{' '}
+            {'data' in error && JSON.stringify(error.data)}
+          </p>
+        </MessageContainer>
+      ) : (
+        <ContactTableBody data={table} />
+      )}
     </div>
   );
 }
@@ -131,10 +144,19 @@ const StyledLogo = styled(Logo)`
   margin: 0 auto;
 `;
 
-const Userpic = styled.img`
+const StyledUserpic = styled(Userpic)`
   width: 52px;
   height: 52px;
+`;
 
-  object-fit: cover;
-  border-radius: 50%;
+const MessageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100vh;
+  padding-top: 112px;
+
+  background-color: #eef0f4;
 `;

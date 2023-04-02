@@ -3,18 +3,42 @@ import { ReactComponent as PlusAccountIcon } from './../img/icon-plus-account.sv
 import { ReactComponent as DbOutIcon } from './../img/icon-db-out.svg';
 import { ReactComponent as DbInIcon } from './../img/icon-db-in.svg';
 import { ReactComponent as PencilIcon } from './../img/icon-pencil.svg';
+import { useModal } from '../hooks/useModal';
+import { useGetContactListQuery } from '../store/contactApi';
 
 export default function RadialMenu() {
+  const { openModal } = useModal();
+  const { data } = useGetContactListQuery();
+
+  const exportData = () => {
+    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+      JSON.stringify(data)
+    )}`;
+    const link = document.createElement('a');
+    link.href = jsonString;
+    link.download = 'contacts.json';
+
+    link.click();
+  };
+
+  const handleTopItemClick = () => {
+    openModal('contact');
+  };
+
+  const handleRightItemClick = () => {
+    exportData();
+  };
+
   return (
     <>
       <Root>
-        <TopItem>
+        <TopItem onClick={handleTopItemClick}>
           <Wrapper>
             <StyledPlusAccountIcon />
             <ItemText>Добавить пользователя</ItemText>
           </Wrapper>
         </TopItem>
-        <RightItem>
+        <RightItem onClick={handleRightItemClick}>
           <Wrapper>
             <StyledDbOutIcon />
             <ItemText>Экспортировать контакты</ItemText>
@@ -104,12 +128,14 @@ const ItemText = styled.span`
 const TopItem = styled.div`
   height: 218px;
   width: 218px;
+
   border-radius: 100% 0 0% 0;
   background: radial-gradient(
     circle at 100% 100%,
     transparent 64px,
     #ffffff 65px
   );
+  cursor: pointer;
 
   &:hover {
     background: radial-gradient(
@@ -131,8 +157,10 @@ const TopItem = styled.div`
 const RightItem = styled.div`
   height: 218px;
   width: 218px;
+
   border-radius: 0 100% 0 0;
   background: radial-gradient(circle at 0 100%, transparent 64px, #ffffff 65px);
+  cursor: pointer;
 
   &:hover {
     background: radial-gradient(
@@ -154,8 +182,10 @@ const RightItem = styled.div`
 const BottomItem = styled.div`
   height: 218px;
   width: 218px;
+
   border-radius: 0 0 0 100%;
   background: radial-gradient(circle at 100% 0, transparent 64px, #ffffff 65px);
+  cursor: pointer;
 
   &:hover {
     background: radial-gradient(
@@ -177,8 +207,10 @@ const BottomItem = styled.div`
 const LeftItem = styled.div`
   height: 218px;
   width: 218px;
+
   border-radius: 0 0 100% 0;
   background: radial-gradient(circle at 0 0, transparent 64px, #ffffff 65px);
+  cursor: pointer;
 
   &:hover {
     background: radial-gradient(

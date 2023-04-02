@@ -16,8 +16,8 @@ export const useModal = () => {
     }
   };
 
-  const openModal = (value: string) => {
-    dispatch(openModalAction(value));
+  const openModal = (name: string, data?: unknown) => {
+    dispatch(openModalAction({ name, data }));
     window.addEventListener('keydown', handleEscPress);
     return;
   };
