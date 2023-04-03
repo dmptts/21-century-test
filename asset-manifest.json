@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.js": "/21-century-test/static/js/main.cdac80d5.js",
+    "static/media/inter-semibold.woff": "/21-century-test/static/media/inter-semibold.6d7d360a0832f5c43a22.woff",
+    "static/media/inter-regular.woff": "/21-century-test/static/media/inter-regular.f3ce705f806c10eb6e2d.woff",
+    "static/media/inter-semibold.woff2": "/21-century-test/static/media/inter-semibold.7249951440b8b2f3f6ba.woff2",
+    "static/media/inter-regular.woff2": "/21-century-test/static/media/inter-regular.ac03a6de9ea313009257.woff2",
+    "index.html": "/21-century-test/index.html",
+    "static/media/icon-db-in.svg": "/21-century-test/static/media/icon-db-in.d184e3737ce7029b7e87748a21fa3325.svg",
+    "static/media/icon-db-out.svg": "/21-century-test/static/media/icon-db-out.3fc0c9fbcc0030f9702f1d250fb1a24b.svg",
+    "static/media/icon-spinner.svg": "/21-century-test/static/media/icon-spinner.4341a3ffdd7bc11ed8ee4b2e0e30fc82.svg",
+    "static/media/icon-usepic-placeholder.svg": "/21-century-test/static/media/icon-usepic-placeholder.d18409fac3a6034dd4748aac5d8e7d87.svg",
+    "static/media/icon-plus-account.svg": "/21-century-test/static/media/icon-plus-account.46e4d6773887e567c87a13ae79bb00e7.svg",
+    "static/media/logo.svg": "/21-century-test/static/media/logo.c3d7443452a816e191cb027718c3f3ce.svg",
+    "static/media/icon-pencil.svg": "/21-century-test/static/media/icon-pencil.910a329c66873c37e922077cab61457f.svg",
+    "main.cdac80d5.js.map": "/21-century-test/static/js/main.cdac80d5.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.cdac80d5.js"
+  ]
+}
